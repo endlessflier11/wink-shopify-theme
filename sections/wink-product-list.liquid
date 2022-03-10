@@ -1,0 +1,264 @@
+<div class="wink-product-list">
+  {%- assign page_width = 1200 -%}
+  {%- assign block_size = section.settings.grid -%}
+  {%- assign gap_offset = section.settings.gap -%}
+  {%- assign extended_width = page_width | plus: gap_offset -%}
+  {%- assign one_width = extended_width | divided_by: block_size -%}
+  {%- assign row_height = section.settings.grid-height | plus: 80 -%}
+  {% for block in (1..block_size) %}
+      {% case block %}
+        {% when 1 %}
+          {%- assign product = all_products[section.settings.product-1] -%}
+        {% when 2 %}
+          {%- assign product = all_products[section.settings.product-2] -%}
+        {% when 3 %}
+          {%- assign product = all_products[section.settings.product-3] -%}
+        {% when 4 %}
+          {%- assign product = all_products[section.settings.product-4] -%}
+        {% when 5 %}
+          {%- assign product = all_products[section.settings.product-5] -%}
+        {% when 6 %}
+          {%- assign product = all_products[section.settings.product-6] -%}
+      {% endcase %}
+
+      {% if product == empty %}
+        {%- assign section_onboarding = true -%}
+      {% endif %}
+      
+      <div
+           class="wink-product-container"
+           style="width: {{ one_width }}px; height: {{ row_height }}px"
+           id="ProductSection-{{ section.id }}"
+           data-section-id="{{ section.id }}"
+           data-section-type="product"
+           data-ajax-enabled="{{ settings.enable_ajax }}"
+           >
+        {% comment %}
+        Get first variant, or deep linked one
+        {% endcomment %}
+        {%- assign current_variant = product.selected_or_first_available_variant -%}
+        {%- assign product_thumb_size = '110x110' -%}
+        {%- assign product_image_zoom_size = '1024x1024' -%}
+        {%- assign product_image_scale = '2' -%}
+
+        <div 
+             class="wink-product-single"
+             style="width: calc(100% - {{ gap_offset }}px)"
+             >
+          <div class="wink-product-content">
+            {% unless section_onboarding %}
+            {%- assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media -%}
+
+            {% capture product_image_size %}{{ height }}x{% endcapture %}
+            <img src="{{ featured_media | img_url: product_image_size, scale: product_image_scale }}" alt="{{ featured_media.alt }}" id="WinkMedia-{{ section.id }}" class="wink-product-img">
+
+            {% else %}
+            <div id="FeaturedImageZoom-{{ section.id }}" class="product-single__media">
+              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            {% endunless %}
+          </div>
+
+          <div class="wink-product-description">
+            <div class="wink-product-single__meta">
+              {% unless section_onboarding %}
+              {%- assign price = current_variant.price -%}
+              {%- assign available = current_variant.available -%}
+              {%- assign inventory_quantity = current_variant.inventory_quantity  -%}
+              {% else %}
+              {%- assign price = 1999 -%}
+              {%- assign available = true -%}
+              {%- assign inventory_quantity = 0  -%}
+              {% endunless %}
+              {% if section.settings.show-title %}
+                <div class="wink-product-single__title">
+                  <a href="{{ product.url }}">
+                    {% unless product == empty %}
+                    {{ product.title }}
+                    {% else %}
+                    {{ 'homepage.onboarding.product_title' | t }}
+                    {% endunless %}
+                  </a>
+                </div>
+              {% endif %}
+
+              {% if section.settings.show-quantity %}
+                <div class="wink-product__price">
+                  {{ product.description }} | {{ inventory_quantity }} PRODUCTS
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>          
+      </div>
+  {% endfor %}
+</div>
+
+<style>
+  .wink-product-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0 auto;
+  }
+  .wink-product-container {
+    display: flex;
+    flex-direction: column;
+    height: 480px;
+    width: 410px;
+  }
+  .wink-product-single {
+    width: calc(100% - 32px);
+    height: calc(100% - 80px);
+    margin: 0 auto;
+  }
+  .wink-product-content {
+    width: 100%;
+    height: 100%;
+  }
+  .wink-product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  .wink-product-description {
+    width: 100%;
+    height: 80px;
+  }
+  .wink-product-single__title {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 20px;
+    font-weight: 400;
+    text-decoration: underline;
+    margin-top: 16px;
+    cursor: pointer;
+  }
+  .wink-product__price {
+    font-family: 'Campton', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 1px;
+  }
+</style>
+
+
+{% unless product == empty %}
+  <script type="application/json" id="ProductJson-{{ section.id }}">
+    {{ product | json }}
+  </script>
+  <script type="application/json" id="ModelJson-{{ section.id }}">
+    {{ product.media | where: 'media_type', 'model' | json }}
+  </script>
+{% endunless %}
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "url": {{ shop.url | append: product.url | json }},
+  "description": {{ product.description | strip_html | json }},
+  {%- if current_variant.sku != blank -%}
+    "sku": {{ current_variant.sku | json }},
+  {%- endif -%}
+  "brand": {
+    "@type": "Thing",
+    "name": {{ product.vendor | json }}
+  },
+  "offers": [
+    {%- for variant in product.variants -%}
+      {
+        "@type" : "Offer",
+        {%- if variant.sku != blank -%}
+          "sku": {{ variant.sku | json }},
+        {%- endif -%}
+        "availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+        "price" : {{ variant.price | divided_by: 100.00 | json }},
+        "priceCurrency" : {{ cart.currency.iso_code | json }},
+        "url" : {{ shop.url | append: variant.url | json }}
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+</script>
+
+
+{% schema %}
+{
+  "name": "Wink product list",
+  "class": "index-section index-section--featured-product",
+  "settings": [
+    {
+      "type": "range",
+      "id": "grid",
+      "label": "The products per row",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "number",
+      "id": "grid-height",
+      "label": "Row Height",
+      "default": 400
+    },
+    {
+      "type": "number",
+      "id": "gap",
+      "label": "Gap",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "show-title",
+      "label": "Show title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show-quantity",
+      "label": "Show quantity selector",
+      "default": true
+    },
+    {
+      "type": "product",
+      "id": "product-1",
+      "label": "1st product"
+    },
+    {
+      "type": "product",
+      "id": "product-2",
+      "label": "2nd product"
+    },
+    {
+      "type": "product",
+      "id": "product-3",
+      "label": "3rd product"
+    },
+    {
+      "type": "product",
+      "id": "product-4",
+      "label": "4th product"
+    },
+    {
+      "type": "product",
+      "id": "product-5",
+      "label": "5th product"
+    },
+    {
+      "type": "product",
+      "id": "product-6",
+      "label": "6th product"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wink product list",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

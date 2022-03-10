@@ -1,0 +1,122 @@
+{% comment %}
+    Usage:
+    {% include 'wink-spotify-card', blocks: blocks, logo_image: image, title: title, link_text: link_text, link_url: link_url, show_all: show_all %}
+ %}
+{% endcomment %}
+
+<div class="wink-spotify">
+	<img class="wink-spotify-image" src="{{ logo_image | img_url: '1024x1024' }}"></img>
+	<div class="wink-spotify-divide"></div>
+
+	<div class="wink-spotify-collection">
+      {% if show_all %}
+		<div class="wink-spotify-uniform">
+			<div class="wink-spotify-item wink-spotify-first-item">
+				{%- assign collection = collections[blocks[0].settings.collection] -%}
+				{% include 'wink-collection-item2', collection: collection, index: 0, show_all: true %}
+			</div>
+			<div class="wink-spotify-item wink-spotify-second-item">
+				{%- assign collection = collections[blocks[1].settings.collection] -%}
+				{% include 'wink-collection-item2', collection: collection, index: 1, show_all: true %}
+			</div>
+		</div>
+		<div class="wink-spotify-uniform">
+			<div class="wink-spotify-item wink-spotify-third-item">
+				{%- assign collection = collections[blocks[2].settings.collection] -%}
+				{% include 'wink-collection-item2', collection: collection, index: 2, show_all: true %}
+			</div>
+			<div class="wink-spotify-item wink-spotify-fourth-item">
+				{%- assign collection = collections[blocks[3].settings.collection] -%}
+				{% include 'wink-collection-item2', collection: collection, index: 3, show_all: true %}
+			</div>
+		</div>
+      
+      {% else %}
+      
+      	<div class="wink-spotify-single-view">
+            {%- assign collection = collections[blocks[4].settings.collection] -%}
+            {% include 'wink-collection-item2', collection: collection, index: 0, show_all: false %}
+        </div>
+      {% endif %}
+	</div>
+
+	<div class="wink-spotify-title">{{title}}</div>
+	<div class="wink-spotify-link">
+      <a href="{{link_url}}">{{link_text}}</a>
+	</div>
+
+</div>
+
+<style>
+	.wink-spotify {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 585px;
+		height: 721px;
+		margin: 0 auto;
+		background: #F5F4F4
+	}
+	.wink-spotify-divide {
+		width: 447px;
+		margin: 0 auto;
+		border-bottom: 0.5px solid #D8D8D8;
+	}
+	.wink-spotify-image {
+      	margin-top: 20px;
+		width: 150px;
+		height: 50px;
+		object-fit: cover;
+	}
+	.wink-spotify-collection {
+		display: flex;
+		flex-direction: column;
+		margin-top: 56px;
+	}
+  	.wink-spotify-single-view {
+      	width: 447px;
+      	height: 424px;
+      	margin: 0 auto;
+    }
+	.wink-spotify-uniform {
+		display: flex;
+		flex-direction: row;
+	}
+	.wink-spotify-item {
+		width: 221px;
+		height: 210px;
+	}
+	.wink-spotify-first-item {
+		border-top-left-radius: 4px;
+		margin-right: 1px;
+		margin-bottom: 1px;
+	}
+	.wink-spotify-second-item {
+		border-top-right-radius: 4px;
+		margin-bottom: 1px;
+	}
+	.wink-spotify-third-item {
+		border-bottom-left-radius: 4px;
+		margin-right: 1px;
+	}
+	.wink-spotify-fourth-item {
+		border-bottom-right-radius: 4px;
+	}
+    .wink-spotify-title {
+        font-family: 'Bodoni Moda', serif;
+        font-size: 24px;
+        font-weight: 400;
+        margin-top: 32px;
+      	color: black;
+    }
+  	.wink-spotify-link {
+        font-family: 'Campton', sans-serif;
+        font-size: 18px;
+        font-weight: 400;
+        text-decoration: underline;
+        color: black;
+        cursor: pointer;
+      	margin-top: 12px;
+    }
+</style>
+

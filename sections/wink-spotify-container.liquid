@@ -1,0 +1,124 @@
+<div class="wink-spotify-container" style="margin-top:{{section.settings.top}}px">
+  {% include 'wink-spotify-card', blocks: section.blocks, logo_image: section.settings.first_image, title: section.settings.first_title, link_text: section.settings.first_link_text, link_url: section.settings.first_link_url, show_all: section.settings.first_show_all %}
+  <div class="wink-spotify-container-gap"></div>
+  {% include 'wink-spotify-card', blocks: section.blocks, logo_image: section.settings.second_image, title: section.settings.second_title, link_text: section.settings.second_link_text, link_url: section.settings.second_link_url, show_all: section.settings.second_show_all %}
+</div>
+
+<style>
+  .wink-spotify-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0 auto;
+    width: 1200px;
+  }
+  .wink-spotify-container-gap {
+    width: 30px;
+  }
+</style>
+
+
+
+{% schema %}
+{
+	"name": "Wink spotify Container",
+	"class": "index-section",
+	"max_blocks": 12,
+	"settings": [
+		{
+			"type": "number",
+			"id": "top",
+			"label": "Top",
+			"default": 0
+		},
+		{
+			"type": "image_picker",
+			"id": "first_image",
+			"label": "First logo image"
+		},
+		{
+			"type": "text",
+			"id": "first_title",
+			"label": "First title"
+		},
+		{
+			"type": "text",
+			"id": "first_link_text",
+			"label": "First link label"
+		},
+		{
+			"type": "text",
+			"id": "first_link_url",
+			"label": "First link url"
+		},
+        {
+          	"type": "checkbox",
+          	"id": "first_show_all",
+          	"label": "First show all",
+          	"default": true
+        },
+		{
+			"type": "image_picker",
+			"id": "second_image",
+			"label": "Second logo image"
+		},
+		{
+			"type": "text",
+			"id": "second_title",
+			"label": "Second title"
+		},
+		{
+			"type": "text",
+			"id": "second_link_text",
+			"label": "Second link label"
+		},
+		{
+			"type": "text",
+			"id": "second_link_url",
+			"label": "Second link url"
+		},
+        {
+          	"type": "checkbox",
+          	"id": "second_show_all",
+          	"label": "Second show all",
+          	"default": true
+        }
+	],
+	"blocks": [
+		{
+			"type": "featured_collection",
+			"name": "Collection",
+			"settings": [
+				{
+					"label": "Collection",
+					"id": "collection",
+					"type": "collection"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Wink spotify Container",
+			"category": "Collection",
+			"blocks": [
+				{
+					"type": "featured_collection"
+				},
+				{
+					"type": "featured_collection"
+				},
+				{
+					"type": "featured_collection"
+				},
+				{
+					"type": "featured_collection"
+				},
+				{
+					"type": "featured_collection"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

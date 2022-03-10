@@ -1,0 +1,109 @@
+<div class="custom-page-width">
+  {% case section.settings.grid %}
+    {% when 2 %}
+      {%- assign grid_item_width = 'medium-up--one-half' -%}
+    {% when 3 %}
+      {%- assign grid_item_width = 'small--one-half medium-up--one-third' -%}
+    {% when 4 %}
+      {%- assign grid_item_width = 'small--one-half medium-up--one-quarter' -%}
+    {% when 5 %}
+      {%- assign grid_item_width = 'small--one-half medium-up--one-fifth' -%}
+  {% endcase %}
+
+  <div class="collection-grid">
+    <ul class="grid grid--uniform">
+      {% for block in section.blocks limit: section.blocks.size %}
+        <li class="grid__item {{ grid_item_width }}" {{ block.shopify_attributes }}>
+          {%- assign collection = collections[block.settings.collection] -%}
+          {% include 'collection-grid-item', collection: collection %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  {% if section.blocks.size == 0 %}
+    {% include 'no-blocks' %}
+  {% endif %}
+</div>
+<style> 
+  .custom-page-width{
+    width: 1200px;
+    margin: 0px auto;
+  }
+  .winks-main-title{
+    text-align: center;
+    font-family: 'Bodoni Moda', serif;
+    font-size: 34px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: black;
+  }
+  .divide-line{
+    width: 1200px;
+    margin: 0px auto;
+    margin-bottom: 58px;
+    border-bottom: 0.5px solid #D8D8D8;
+  }
+</style>
+
+
+{% schema %}
+{
+  "name": "Custom Collection list",
+  "class": "index-section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "number",
+      "id": "row-width",
+      "label": "Width per row",
+      "default": 380
+    },
+    {
+      "type": "number",
+      "id": "row-height",
+      "label": "Height per row",
+      "default": 275
+    },
+    {
+      "type": "range",
+      "id": "grid",
+      "label": "Collections per row",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    }
+  ],
+  "blocks": [
+    {
+      "type": "featured_collection",
+      "name": "My Product",
+      "settings": [
+        {
+          "label": "Product",
+          "id": "my-product",
+          "type": "collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Collection list",
+      "category": "Collection",
+      "blocks": [
+        {
+          "type": "featured_collection"
+        },
+        {
+          "type": "featured_collection"
+        },
+        {
+          "type": "featured_collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

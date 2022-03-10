@@ -1,0 +1,149 @@
+{%- assign product = all_products[section.settings.featured_product] -%}
+
+{% if product == empty %}
+  {%- assign section_onboarding = true -%}
+{% endif %}
+
+<div class="custom-product-container" id="ProductSection-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="product" data-ajax-enabled="{{ settings.enable_ajax }}">
+  {% comment %}
+    Get first variant, or deep linked one
+  {% endcomment %}
+  {%- assign current_variant = product.selected_or_first_available_variant -%}
+  {%- assign product_thumb_size = '110x110' -%}
+  {%- assign product_image_zoom_size = '1024x1024' -%}
+  {%- assign product_image_scale = '2' -%}
+
+  <div class="wink-product-single">
+    <div class="wink-product-container">
+      {% unless section_onboarding %}
+        {%- assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media -%}
+
+        {% capture product_image_size %}{{ height }}x{% endcapture %}
+        <img src="{{ featured_media | img_url: product_image_size, scale: product_image_scale }}" alt="{{ featured_media.alt }}" id="WinkMedia-{{ section.id }}" class="wink-product-img">
+
+      {% else %}
+        <div id="FeaturedImageZoom-{{ section.id }}" class="product-single__media">
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {% endunless %}
+    </div>
+
+    <div class="wink-product-description">
+      <div class="product-single__meta">
+        {% unless section_onboarding %}
+          {%- assign price = current_variant.price -%}
+          {%- assign available = current_variant.available -%}
+        {% else %}
+          {%- assign price = 1999 -%}
+          {%- assign available = true -%}
+        {% endunless %}
+        <h3 class="h1 product-single__title">
+          {% unless product == empty %}
+            {{ product.title }}
+          {% else %}
+            {{ 'homepage.onboarding.product_title' | t }}
+          {% endunless %}
+        </h3>
+
+        <div>
+          <div class="featured-product__price">
+            {% include 'product-price', variant: current_variant, product: product %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .custom-product-container {
+    display: flex;
+    flex-direction: column;
+    height: 480px;
+    width: 400px;
+  }
+  .wink-product-single {
+    width: 100%;
+    height: calc(100% - 80px);
+  }
+  .wink-product-container {
+    width: 100%;
+    height: 100%;
+  }
+  .wink-product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .wink-product-description {
+    width: 100%;
+    height: 80px;
+  }
+</style>
+
+{% unless product == empty %}
+  <script type="application/json" id="ProductJson-{{ section.id }}">
+    {{ product | json }}
+  </script>
+  <script type="application/json" id="ModelJson-{{ section.id }}">
+    {{ product.media | where: 'media_type', 'model' | json }}
+  </script>
+{% endunless %}
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "url": {{ shop.url | append: product.url | json }},
+  "description": {{ product.description | strip_html | json }},
+  {%- if current_variant.sku != blank -%}
+    "sku": {{ current_variant.sku | json }},
+  {%- endif -%}
+  "brand": {
+    "@type": "Thing",
+    "name": {{ product.vendor | json }}
+  },
+  "offers": [
+    {%- for variant in product.variants -%}
+      {
+        "@type" : "Offer",
+        {%- if variant.sku != blank -%}
+          "sku": {{ variant.sku | json }},
+        {%- endif -%}
+        "availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+        "price" : {{ variant.price | divided_by: 100.00 | json }},
+        "priceCurrency" : {{ cart.currency.iso_code | json }},
+        "url" : {{ shop.url | append: variant.url | json }}
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+</script>
+
+{% schema %}
+{
+  "name": "Custom product",
+  "class": "index-section index-section--featured-product",
+  "settings": [
+    {
+      "type": "product",
+      "id": "featured_product",
+      "label": "Product"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quantity_selector",
+      "label": "Show quantity selector",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Product",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

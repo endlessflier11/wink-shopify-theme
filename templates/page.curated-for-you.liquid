@@ -1,0 +1,8 @@
+<iframe id="curated_for_you_frame" src="https://www.tillageplants.com/curated-for-you" style="width: 100%; min-height: 1000px; border: 0px"></iframe>
+<script>
+  var div = document.getElementById("curated_for_you_frame");
+    div.onload = function() {
+      div.style.height = div.contentWindow.document.body.scrollHeight + 'px';
+      console.log("111=", div.contentWindow.document.body.scrollHeight);
+    }
+</script>

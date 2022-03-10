@@ -1,0 +1,153 @@
+@font-face {
+  font-family: 'PalmerLakePrintRegular';
+  font-style: normal;
+  font-weight: 400;
+  src: local('PalmerLakePrintRegular'),
+    url('https://cdn.shopify.com/s/files/1/0552/1562/0130/files/PalmerLakePrint-Regular.ttf?v=1637662400') format('truetype');
+}
+
+.main-title-wrapper {
+  display: flex;
+  height: 126px;
+  align-items: center;
+  justify-content: center;
+  background: #f5f4f4;
+  margin-bottom: 80px;
+}
+
+.hey-title {
+  font-family: 'PalmerLakePrintRegular';
+  font-size: 80px;
+  font-weight: 400;
+  color: #464545;
+  margin: -10px 0px 0px;
+}
+
+.main-title {
+  font-family: 'Campton', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: black;
+  margin: 0px 0px 0px 10px;
+}
+
+
+/* unused styles */
+
+.image-curated-for-you {
+  width: 300px;
+  height: 86px;
+  margin-top: -14px;
+  cursor: pointer;
+}
+
+.new-products-title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 100px 0px 10px 0px;
+}
+
+.new-products-title {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 40px;
+  font-weight: 400;
+  color: black;
+  margin: 0px;
+}
+
+.divide-line {
+  width: 1200px;
+  margin: 0px auto;
+  margin-bottom: 58px;
+  border-bottom: 0.5px solid #D8D8D8;
+}
+
+.trending-title-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 72px auto 10px;
+   	width: 1310px;
+  	padding-left: 55px;
+}
+
+.trending-title {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: black;
+    margin: 0px;
+}
+
+.trending-dresses-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 22px auto 0px;
+    width: 1310px;
+    padding-left: 55px;
+}
+
+.trending-dresses-product {
+  	padding-right: 10px
+}
+
+.lifestyle-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 22px auto 0px;
+    width: 1310px;
+    padding-left: 55px;
+}
+
+.one-collection {
+	padding-right: 30px;
+}
+
+.one-collection-image {
+	width: 380px;
+	height: 274px;
+}
+
+.collection-subtitle {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: #464545;
+    margin: 17px 0px 0px;
+    text-decoration: underline;
+  	cursor: pointer;
+}
+
+.collection-social {
+	display: flex;
+	flex-direction: row;
+}
+
+.collection-number {
+    font-family: 'Campton', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #231F20;
+    margin: 18px 0px 0px 0px;
+}
+
+.collection-curators {
+    font-family: 'Campton', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #231F20;
+    margin: 18px 0px 0px 5px;
+}
+
+.collection-social-separate {
+	width: 1px;
+	height: 20px;
+	background: #707070;
+	margin: 16px 10px 0px;
+}
+

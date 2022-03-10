@@ -1,0 +1,284 @@
+<div class="wink-shop-match-content">
+  <div class="wink-shop-match-top-wrapper">
+  	<img class="wink-shop-match-image" src="{{ section.settings.image | img_url: '1024x1024' }}"></img>
+  	<div class="wink-shop-match-question">
+      <div class="wink-shop-match-title">{{section.settings.title}}</div>
+      <div class="wink-shop-match-divide"></div>
+      <div class="wink-shop-match-description">{{section.settings.description}}</div>
+      <div class="wink-shop-match-button">{{section.settings.button_text}}</div>
+  	</div>
+  </div>
+
+  {%- assign idx = 0 -%}
+  <div class="wink-shop-match-collection">
+    <div class="wink-shop-match-uniform">
+      {% for i in (1 .. 3) %}
+      	{%- assign block1 = section.blocks[idx] -%}
+      	{%- assign idx = idx | plus: 1 -%}
+      	{%- assign block2 = section.blocks[idx] -%}
+      	{%- assign idx = idx | plus: 1 -%}
+        <div class="wink-shop-match-item-wrapper">
+          <div class="wink-shop-match-item-view">
+            {%- assign collection1 = collections[block1.settings.collection] -%}
+            {%- assign collection2 = collections[block2.settings.collection] -%}
+            {% include 'wink-match-item', collection1: collection1, collection2: collection2 %}
+          </div>
+          <div class="wink-shop-match-item-comment">
+            <div class="wink-shop-match-comment-title">
+              {% case idx %}
+              {% when 2 %}
+                {%- assign item_label = section.settings.first_match_label -%}
+              {% when 4 %}
+                {%- assign item_label = section.settings.second_match_label -%}
+              {% when 6 %}
+                {%- assign item_label = section.settings.third_match_label -%}
+              {% endcase %}
+              
+              {{item_label}}
+            </div>
+            <div class="wink-shop-match-comment-description">
+              {% case idx %}
+              {% when 2 %}
+                {%- assign item_description = section.settings.first_match_description -%}
+              {% when 4 %}
+                {%- assign item_description = section.settings.second_match_description -%}
+              {% when 6 %}
+                {%- assign item_description = section.settings.third_match_description -%}
+              {% endcase %}
+              
+              {{item_description}}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if section.blocks.size == 0 %}
+    {% include 'no-blocks' %}
+  {% endif %}
+</div>
+
+<style>
+  .wink-shop-match-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 1200px;
+    margin: 0 auto;
+    padding: 85px 100px;
+    background: #F5F4F4
+  }
+  .wink-shop-match-top-wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 1000px;
+    height: 400px;
+    margin: 0 auto;
+    box-shadow: 0px 1px 1px rgb(0 0 0 / 10%);
+    border: 0.2px solid #D8D8D8;
+    border-radius: 4px;
+  }
+  .wink-shop-match-question {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    align-items: center;
+    background: #FFF;
+    border-radius: 0px 4px 4px 0px;
+  }
+  .wink-shop-match-title {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 32px;
+    font-weight: 700;
+    margin-top: 80px;
+  }
+  .wink-shop-match-divide {
+    width: 250px;
+    margin: 0 auto;
+    margin-top: 16px;
+    border-bottom: 0.5px solid #D8D8D8;
+  }
+  .wink-shop-match-description {
+    width: 280px;
+    text-align: center;
+    margin: 20px auto 0px;
+    font-family: 'Bodoni Moda', serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 30px;
+  }
+  .wink-shop-match-button {
+    width: 207px;
+    height: 41px;
+    margin: 0 auto;
+    margin-top: 24px;
+    background: #FF634A;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFF;
+    font-family: 'Campton', sans-serif;
+    font-size: 12px;
+    font-weight: 700; 
+    cursor: pointer;
+  }  
+  .wink-shop-match-image {
+    width: 50%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px 0px 0px 4px;
+  }
+  .wink-shop-match-collection {
+    display: flex;
+    width: 1025px;
+    margin-top: 22px;
+  }
+  .wink-shop-match-uniform {
+    display: flex;
+    flex-direction: row;
+  }
+  .wink-shop-match-item-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 342px;
+  }
+  .wink-shop-match-item-view {
+    width: 317px;
+    height: 227px;
+    margin: 0 auto;
+  }
+  .wink-shop-match-item-comment {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-left: 12px;
+  }
+  .wink-shop-match-comment-title {
+    margin-top: 13px;
+    font-family: 'Bodoni Moda', serif;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: #464545;
+  }
+  .wink-shop-match-comment-description {
+    margin-top: 2px;
+    font-family: 'Campton', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: #979797;   
+  }
+</style>
+
+
+{% schema %}
+{
+  "name": "Wink shop match",
+  "class": "index-section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+	},
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "TITLE"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "CLICK ME"
+    },
+	{
+      "type": "range",
+      "id": "grid",
+      "label": "Collections per row",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "text",
+      "id": "first_match_label",
+      "label": "1st match label"
+    },
+    {
+      "type": "text",
+      "id": "first_match_description",
+      "label": "1st match description"
+    },
+    {
+      "type": "text",
+      "id": "second_match_label",
+      "label": "2nd match label"
+    },
+    {
+      "type": "text",
+      "id": "second_match_description",
+      "label": "2nd match description"
+    },
+    {
+      "type": "text",
+      "id": "third_match_label",
+      "label": "3rd match label"
+    },
+    {
+      "type": "text",
+      "id": "third_match_description",
+      "label": "3rd match description"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "featured_collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "label": "Collection",
+          "id": "collection",
+          "type": "collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wink shop match",
+      "category": "Collection",
+      "blocks": [
+        {
+          "type": "featured_collection"
+        },
+        {
+          "type": "featured_collection"
+        },
+        {
+          "type": "featured_collection"
+        },
+        {
+          "type": "featured_collection"
+        },
+        {
+          "type": "featured_collection"
+        },
+        {
+          "type": "featured_collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

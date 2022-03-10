@@ -1,0 +1,191 @@
+<div class="wink-shop-content">
+  <div class="wink-shop-top-wrapper">
+  	<img class="wink-shop-image" src="{{ section.settings.image | img_url: '1024x1024' }}"></img>
+  	<div class="wink-shop-question">
+      <div class="wink-shop-title">{{section.settings.title}}</div>
+      <div class="wink-shop-divide"></div>
+      <div class="wink-shop-description">{{section.settings.description}}</div>
+      <div class="wink-shop-button">{{section.settings.button_text}}</div>
+  	</div>
+  </div>
+
+  <div class="wink-shop-collection">
+    <div class="wink-shop-uniform">
+      {% for block in section.blocks %}
+        <div class="wink-shop-one-item">
+          <div class="wink-shop-one-item-content">
+            {%- assign collection = collections[block.settings.collection] -%}
+            {% include 'wink-collection-item', collection: collection %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if section.blocks.size == 0 %}
+    {% include 'no-blocks' %}
+  {% endif %}
+</div>
+
+<style>
+  .wink-shop-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 1200px;
+    margin: 0 auto;
+    padding: 85px 100px;
+    background: #F5F4F4
+  }
+  .wink-shop-top-wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 1000px;
+    height: 400px;
+    margin: 0 auto;
+    box-shadow: 0px 1px 1px rgb(0 0 0 / 10%);
+    border: 0.2px solid #D8D8D8;
+    border-radius: 4px;
+  }
+  .wink-shop-question {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    align-items: center;
+    background: #FFF;
+    border-radius: 0px 4px 4px 0px;
+  }
+  .wink-shop-title {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 32px;
+    font-weight: 700;
+    margin-top: 80px;
+  }
+  .wink-shop-divide {
+    width: 250px;
+    margin: 0 auto;
+    margin-top: 16px;
+    border-bottom: 0.5px solid #D8D8D8;
+  }
+  .wink-shop-description {
+    width: 280px;
+    text-align: center;
+    margin: 20px auto 0px;
+    font-family: 'Bodoni Moda', serif;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 30px;
+  }
+  .wink-shop-button {
+    width: 207px;
+    height: 41px;
+    margin: 0 auto;
+    margin-top: 24px;
+    background: #FF634A;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFF;
+    font-family: 'Campton', sans-serif;
+    font-size: 12px;
+    font-weight: 700; 
+    cursor: pointer;
+  }  
+  .wink-shop-image {
+    width: 50%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px 0px 0px 4px;
+  }
+  .wink-shop-collection {
+    display: flex;
+    width: 1025px;
+    margin-top: 22px;
+  }
+  .wink-shop-uniform {
+    display: flex;
+    flex-direction: row;
+  }
+  .wink-shop-one-item {
+    width: 342px;
+    height: 227px;
+  }
+  .wink-shop-one-item-content {
+    width: 317px;
+    height: 100%;
+    margin: 0 auto;
+  }
+</style>
+
+
+{% schema %}
+{
+  "name": "Wink shop content",
+  "class": "index-section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+	},
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "TITLE"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "CLICK ME"
+    },
+	{
+      "type": "range",
+      "id": "grid",
+      "label": "Collections per row",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    }
+  ],
+  "blocks": [
+    {
+      "type": "featured_collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "label": "Collection",
+          "id": "collection",
+          "type": "collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wink shop content",
+      "category": "Collection",
+      "blocks": [
+        {
+          "type": "featured_collection"
+        },
+        {
+          "type": "featured_collection"
+        },
+        {
+          "type": "featured_collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,90 @@
+<div id="winks-title-section">
+  {%- if section.settings.title != blank -%}
+  <div 
+       class="winks-main-title" 
+       style="margin-top: {{ section.settings.top-offset }}px; text-align: {{ section.settings.text-alignment }}; font-size: {{ section.settings.font-size }}px"
+       >
+    {{section.settings.title}}
+  </div>  
+  <div class="divide-line" style="margin-bottom: {{ section.settings.bottom-offset }}px"></div>
+  {%- endif -%}
+</div>
+<style> 
+  #winks-title-section{
+    position:relative;
+    width: 1200px;
+    margin: 0px auto;
+  }
+  .winks-main-title{
+    text-align: center;
+    font-family: 'Bodoni Moda', serif;
+    font-size: 34px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: black;
+  }
+  .divide-line{
+    margin-bottom: 0px;
+    border-bottom: 0.5px solid #D8D8D8;
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "TITLE",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "select",
+        "id": "text-alignment",
+        "label": "Text alignment",
+        "default": "center",
+        "options": [
+          {
+            "label": "Left",
+            "value": "left"
+          },
+          {
+            "label": "Center",
+            "value": "center"
+          },
+          {
+            "label": "Right",
+            "value": "right"
+          }
+        ]
+	  },
+	  {
+        "type":"number",
+        "id": "font-size",
+        "label": "Font size",
+		"default": 34
+	  },
+      {
+        "type":"number",
+        "id": "top-offset",
+        "label": "Top Offset",
+		"default": 10
+      },
+      {
+        "type":"number",
+        "id": "bottom-offset",
+        "label": "Bottom Offset",
+		"default": 10
+      }
+    ],
+    "presets": [
+      {
+        "name": "Custom Title",
+        "category": "Winks",
+        "settings": {
+
+        }
+      }
+    ]
+  }
+{% endschema %}

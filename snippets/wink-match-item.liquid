@@ -1,0 +1,146 @@
+{% comment %}
+    Renders a list of products from a collection
+
+    Accepts:
+    - collection: {Object} Collection Liquid object (required)
+
+    Usage:
+    {% include 'wink-match-item', collection1: collection1, collection2: collection2 %}
+{% endcomment %}
+
+{% if collection1.image %}
+  {%- assign collection1_image = collection1.image -%}
+{% elsif collection1.products.first and collection1.products.first.media != empty %}
+  {%- assign collection1_image = collection1.products.first.featured_media.preview_image -%}
+{% else %}
+  {% assign collection1_image = blank %}
+{% endif %}
+
+{% if collection2.image %}
+  {%- assign collection2_image = collection2.image -%}
+{% elsif collection2.products.first and collection2.products.first.media != empty %}
+  {%- assign collection2_image = collection2.products.first.featured_media.preview_image -%}
+{% else %}
+  {% assign collection2_image = blank %}
+{% endif %}
+
+<div class="wink-match-item">
+  <div class="wink-match-image-wrapper">
+    {% unless collection1_image == blank %}
+      <div class="wink-match-item-image wink-match-left-image" style="background-image: url('{{ collection1_image | img_url: '1024x1024' }}')"></div>
+    {% else %}
+      {% if collection1 == empty %}
+        <div class="wink-match-item-catpure">
+          {% capture current %}{% cycle 1, 2, 3 %}{% endcapture %}
+          {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {% else %}
+        <div class="wink-match-item-overlay" style="background-image: url('{{ collection1_image | img_url: '1024x1024' }}')"></div>
+      {% endif %}
+    {% endunless %}
+
+    {% unless collection2_image == blank %}
+      <div class="wink-match-item-image wink-match-right-image" style="background-image: url('{{ collection2_image | img_url: '1024x1024' }}')"></div>
+    {% else %}
+      {% if collection2 == empty %}
+        <div class="wink-match-item-catpure">
+          {% capture current %}{% cycle 1, 2, 3 %}{% endcapture %}
+          {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {% else %}
+        <div class="wink-match-item-overlay" style="background-image: url('{{ collection2_image | img_url: '1024x1024' }}')"></div>
+      {% endif %}
+    {% endunless %}
+  </div>
+  
+  <div class="wink-match-item-title-wrapper">
+    <div class="wink-match-item-title" style="margin-left: 12px">
+      {% if collection1.title == blank %}
+      {{ 'homepage.onboarding.collection_title' | t }}
+      {% else %}
+      <a href="{% if collection1.products == empty %}#{% else %}{{ collection1.url }}{% endif %}" class="wink-match-href">
+        {{ collection1.title | truncate: 10, "" }}
+      </a>
+      {% endif %}
+    </div>
+    <div class="wink-match-item-title wink-match-item-title-vs">VS</div>
+    <div class="wink-match-item-title" style="margin-right: 12px">
+      {% if collection2.title == blank %}
+      {{ 'homepage.onboarding.collection_title' | t }}
+      {% else %}
+      <a href="{% if collection2.products == empty %}#{% else %}{{ collection2.url }}{% endif %}" class="wink-match-href">
+        {{ collection2.title | truncate: 10, "" }}
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .wink-match-item {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  .wink-match-item-image-data {
+    width: 100%;
+    height: 100%;
+  }
+  .wink-match-image-wrapper {
+    display: flex;
+    flex-direction: row;
+  }
+  .wink-match-item-image {
+    width: 157px;
+    height: 229px;
+    background-size: cover;
+    background-repeat: repeat;
+    background-position: center;
+    filter: brightness(0.8);
+  }
+  .wink-match-left-image {
+    border-radius: 4px 0px 0px 4px;
+  }
+  .wink-match-right-image {
+    border-radius: 0px 4px 4px 0px;
+    margin-left: 1px;
+  }
+  .wink-match-item-catpure {
+  }
+  .wink-match-item-overlay {
+  }
+  .wink-match-item-title-wrapper {
+    position: absolute;
+    z-index: 999;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin-bottom: 90px;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .wink-match-item-title {
+    font-family: 'PalmerLakePrintRegular';
+    font-size: 40px;
+    font-weight: 400;
+    display: flex;
+	justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .wink-match-item-title-vs {
+    width: 24px;
+    color: #fff;
+  }
+  .wink-match-href {
+    color: #fff;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .wink-match-href:hover {
+    color: #fff !important;
+    filter: brightness(0.8);
+  }
+</style>
